@@ -4,9 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     
-    <groupId>com.ic</groupId>
+    <groupId>com.gamergrotte</groupId>
     <artifactId>Windows-Task-Scheduler</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>${project.revision}</version>
     
     <dependencies>
         <dependency>
@@ -29,8 +29,8 @@
     </dependencies>
     
     <properties>
+        <project.revision>1.0.0-SNAPSHOT</project.revision>
         <maven.compiler.source>15</maven.compiler.source>
         <maven.compiler.target>15</maven.compiler.target>
     </properties>
-
 </project>

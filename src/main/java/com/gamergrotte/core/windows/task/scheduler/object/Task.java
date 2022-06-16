@@ -1,4 +1,4 @@
-package com.ic.core.modules.windows.task.scheduler.object;
+package com.gamergrotte.core.windows.task.scheduler.object;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
