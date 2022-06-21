@@ -1,5 +1,6 @@
 package com.gamergrotte.core.windows.task.scheduler;
 
+import com.gamergrotte.core.windows.task.scheduler.exception.TaskServiceException;
 import com.gamergrotte.core.windows.task.scheduler.object.Task;
 import com.gamergrotte.core.windows.task.scheduler.service.CommandInvoker;
 import com.univocity.parsers.common.record.Record;
@@ -60,14 +61,49 @@ public class TaskService {
         remote = true;
     }
 
+    /**
+     * Remove remote access for managing tasks of a remote computer.
+     * <p>Enables access for managing tasks of the local computer.
+     */
+    public void removeRemote() {
+        this.host = "";
+        this.user = "";
+        this.password = "";
+        this.remote = false;
+    }
+
     private String getRemoteCommand() {
         return "/s " + host + " /u " + user + " /p " + password;
     }
 
-    private String getTaskCommand() {
+    private String getQueryTaskCommand() {
         String command = "schtasks.exe /Query /fo CSV /v /nh";
         if (remote) {
-            command += "" + getRemoteCommand();
+            command += " " + getRemoteCommand();
+        }
+        return command;
+    }
+
+    private String getRunTaskCommand() {
+        String command = "schtasks.exe /run";
+        if (remote) {
+            command += " " + getRemoteCommand();
+        }
+        return command;
+    }
+
+    private String getEndTaskCommand() {
+        String command = "schtasks.exe /end";
+        if (remote) {
+            command += " " + getRemoteCommand();
+        }
+        return command;
+    }
+
+    private String getDeleteTaskCommand() {
+        String command = "schtasks.exe /delete /f";
+        if (remote) {
+            command += " " + getRemoteCommand();
         }
         return command;
     }
@@ -77,30 +113,85 @@ public class TaskService {
     }
 
     /**
-     * Getting a Single Tasks from the Windows Scheduler.
+     * Executing a Single Task with the Windows Task Scheduler.
+     *
+     * @param taskPath Path of the Task.<p>Only using the full path of the task.
+     * @return Task executed
+     */
+    public boolean executeTask(String taskPath) throws IOException, InterruptedException, TaskServiceException {
+        List<String> commands = List.of("cmd.exe", "/c", getEncodingCommand() + " && " + getRunTaskCommand() + " /tn \"" + taskPath + "\"");
+        String output = CommandInvoker.submitCommands(commands);
+
+        if (output.startsWith("ERFOLGREICH")) {
+            return true;
+        } else {
+            throw new TaskServiceException(output);
+        }
+    }
+
+    /**
+     * Ending a Single Task with the Windows Task Scheduler.
+     *
+     * @param taskPath Path of the Task.<p>Only using the full path of the task.
+     * @return Task ended
+     */
+    public boolean endTask(String taskPath) throws IOException, InterruptedException, TaskServiceException {
+        List<String> commands = List.of("cmd.exe", "/c", getEncodingCommand() + " && " + getEndTaskCommand() + " /tn \"" + taskPath + "\"");
+        String output = CommandInvoker.submitCommands(commands);
+
+        if (output.startsWith("ERFOLGREICH")) {
+            return true;
+        } else {
+            throw new TaskServiceException(output);
+        }
+    }
+
+    /**
+     * Delete a Single Task with the Windows Task Scheduler.
+     *
+     * @param taskPath Path of the Task.<p>Only using the full path of the task.
+     * @return Task deleted
+     */
+    public boolean deleteTask(String taskPath) throws IOException, InterruptedException, TaskServiceException {
+        List<String> commands = List.of("cmd.exe", "/c", getEncodingCommand() + " && " + getDeleteTaskCommand() + " /tn \"" + taskPath + "\"");
+        String output = CommandInvoker.submitCommands(commands);
+
+        if (output.startsWith("ERFOLGREICH")) {
+            return true;
+        } else {
+            throw new TaskServiceException(output);
+        }
+    }
+
+    /**
+     * Getting a Single Tasks from the Windows Task Scheduler.
      *
      * @param taskPath Path of the task.<p>Only using the full path of the task.
      * @return List of the scheduled Actions of the given Task
-     * @throws IOException
-     * @throws InterruptedException
      */
-    public List<Task> getSingleTasks(String taskPath) throws IOException, InterruptedException {
-        List<String> commands = List.of("cmd.exe", "/c", getEncodingCommand() + " && " + getTaskCommand() + " /tn \"" + taskPath + "\"");
+    public List<Task> getSingleTasks(String taskPath) throws IOException, InterruptedException, TaskServiceException {
+        List<String> commands = List.of("cmd.exe", "/c", getEncodingCommand() + " && " + getQueryTaskCommand() + " /tn \"" + taskPath + "\"");
         String output = CommandInvoker.submitCommands(commands);
+
+        if (output.startsWith("FEHLER")) {
+            throw new TaskServiceException(output);
+        }
 
         return parseCSV(output);
     }
 
     /**
-     * Getting all Tasks from the Windows Scheduler.
+     * Getting all Tasks from the Windows Task Scheduler.
      *
      * @return List of all scheduled Actions
-     * @throws IOException
-     * @throws InterruptedException
      */
-    public List<Task> getAllTasks() throws IOException, InterruptedException {
-        List<String> commands = List.of("cmd.exe", "/c", getEncodingCommand() + " && " + getTaskCommand());
+    public List<Task> getAllTasks() throws IOException, InterruptedException, TaskServiceException {
+        List<String> commands = List.of("cmd.exe", "/c", getEncodingCommand() + " && " + getQueryTaskCommand());
         String output = CommandInvoker.submitCommands(commands);
+
+        if (output.startsWith("FEHLER")) {
+            throw new TaskServiceException(output);
+        }
 
         return parseCSV(output);
     }
@@ -141,6 +232,7 @@ public class TaskService {
                         , record.getString(25)
                         , record.getString(26)
                         , record.getString(27)
+                        , this
                 );
                 list.add(recordTask);
             } catch (Exception ex) {

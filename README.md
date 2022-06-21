@@ -22,11 +22,11 @@ For building the Windows Task Scheduler API you just need to run the maven goals
 ## Features
 
 - [x] Query
+- [x] Run
+- [x] End
+- [x] Delete
 - [ ] Create
 - [ ] Change
-- [ ] Delete
-- [ ] Run
-- [ ] End
 
 ## Links
 

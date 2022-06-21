@@ -1,8 +1,11 @@
 package com.gamergrotte.core.windows.task.scheduler.object;
 
+import com.gamergrotte.core.windows.task.scheduler.TaskService;
+import com.gamergrotte.core.windows.task.scheduler.exception.TaskServiceException;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 
 /**
@@ -49,4 +52,28 @@ public class Task {
 	private String scheduleRepeatEndTime;
 	private String scheduleRepeatEndDuration;
 	private String scheduleRepeatKill;
+
+	private TaskService taskService;
+
+	/**
+	 * Running the Task with the Windows Task Scheduler.
+	 *
+	 * @return Task executed
+	 */
+	public boolean execute() throws IOException, InterruptedException, TaskServiceException {
+		return taskService.executeTask(taskName);
+	}
+
+	/**
+	 * Ending the Task with the Windows Task Scheduler.
+	 *
+	 * @return Task ended
+	 */
+	public boolean end() throws IOException, InterruptedException, TaskServiceException {
+		return taskService.endTask(taskName);
+	}
+
+	public boolean delete() throws TaskServiceException, IOException, InterruptedException {
+		return taskService.deleteTask(taskName);
+	}
 }
