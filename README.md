@@ -31,3 +31,4 @@ For building the Windows Task Scheduler API you just need to run the maven goals
 ## Links
 
 - [GitHub Project](https://github.com/LizardDarksoul/windows-task-scheduler)
+- [Issue Tracker](https://github.com/LizardDarksoul/windows-task-scheduler/issues)

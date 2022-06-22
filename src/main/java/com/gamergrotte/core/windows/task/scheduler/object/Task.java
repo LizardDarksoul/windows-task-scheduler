@@ -73,6 +73,11 @@ public class Task {
 		return taskService.endTask(taskName);
 	}
 
+	/**
+	 * Delete the Task with the Windows Task Scheduler.
+	 *
+	 * @return Task deleted
+	 */
 	public boolean delete() throws TaskServiceException, IOException, InterruptedException {
 		return taskService.deleteTask(taskName);
 	}

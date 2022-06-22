@@ -1,5 +1,6 @@
 package com.gamergrotte.core.windows.task.scheduler;
 
+import com.gamergrotte.core.windows.task.scheduler.configuration.LanguageConfiguration;
 import com.gamergrotte.core.windows.task.scheduler.exception.TaskServiceException;
 import com.gamergrotte.core.windows.task.scheduler.object.Task;
 import com.gamergrotte.core.windows.task.scheduler.service.CommandInvoker;
@@ -8,6 +9,7 @@ import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
 import lombok.Getter;
 import lombok.NonNull;
+import lombok.Setter;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -16,16 +18,31 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Task Service
+ * <p>Class for managing Tasks with the Windows Task Scheduler.
+ *
+ * <p>This uses the standard windows command line implementation schtasks.exe
+ *
+ * <p>Features:
+ * <p>  - Query
+ * <p>  - Run
+ * <p>  - End
+ * <p>  - Delete
+ */
 public class TaskService {
 
     @Getter
-    public String host;
+    private String host;
     @Getter
-    public String user;
+    private String user;
     @Getter
-    public String password;
+    private String password;
 
-    public boolean remote;
+    private boolean remote;
+
+    @Getter @Setter
+    private LanguageConfiguration languageConfiguration = new LanguageConfiguration();
 
     /**
      * Create a TaskService for managing Tasks.
@@ -122,7 +139,7 @@ public class TaskService {
         List<String> commands = List.of("cmd.exe", "/c", getEncodingCommand() + " && " + getRunTaskCommand() + " /tn \"" + taskPath + "\"");
         String output = CommandInvoker.submitCommands(commands);
 
-        if (output.startsWith("ERFOLGREICH")) {
+        if (output.startsWith(languageConfiguration.getSuccessMessage())) {
             return true;
         } else {
             throw new TaskServiceException(output);
@@ -139,7 +156,7 @@ public class TaskService {
         List<String> commands = List.of("cmd.exe", "/c", getEncodingCommand() + " && " + getEndTaskCommand() + " /tn \"" + taskPath + "\"");
         String output = CommandInvoker.submitCommands(commands);
 
-        if (output.startsWith("ERFOLGREICH")) {
+        if (output.startsWith(languageConfiguration.getSuccessMessage())) {
             return true;
         } else {
             throw new TaskServiceException(output);
@@ -156,7 +173,7 @@ public class TaskService {
         List<String> commands = List.of("cmd.exe", "/c", getEncodingCommand() + " && " + getDeleteTaskCommand() + " /tn \"" + taskPath + "\"");
         String output = CommandInvoker.submitCommands(commands);
 
-        if (output.startsWith("ERFOLGREICH")) {
+        if (output.startsWith(languageConfiguration.getSuccessMessage())) {
             return true;
         } else {
             throw new TaskServiceException(output);
@@ -173,7 +190,7 @@ public class TaskService {
         List<String> commands = List.of("cmd.exe", "/c", getEncodingCommand() + " && " + getQueryTaskCommand() + " /tn \"" + taskPath + "\"");
         String output = CommandInvoker.submitCommands(commands);
 
-        if (output.startsWith("FEHLER")) {
+        if (output.startsWith(languageConfiguration.getErrorMessage())) {
             throw new TaskServiceException(output);
         }
 
@@ -189,7 +206,7 @@ public class TaskService {
         List<String> commands = List.of("cmd.exe", "/c", getEncodingCommand() + " && " + getQueryTaskCommand());
         String output = CommandInvoker.submitCommands(commands);
 
-        if (output.startsWith("FEHLER")) {
+        if (output.startsWith(languageConfiguration.getErrorMessage())) {
             throw new TaskServiceException(output);
         }
 
@@ -207,10 +224,10 @@ public class TaskService {
                 Task recordTask = new Task(
                         record.getString(0)
                         , record.getString(1)
-                        , record.getString(2).equals("Nicht zutreffend") ? null : LocalDateTime.parse(record.getString(2), formatter)
+                        , record.getString(2).equals(languageConfiguration.getFieldNotDefined()) ? null : LocalDateTime.parse(record.getString(2), formatter)
                         , record.getString(3)
                         , record.getString(4)
-                        , record.getString(5).equals("Nicht zutreffend") ? null : LocalDateTime.parse(record.getString(5), formatter)
+                        , record.getString(5).equals(languageConfiguration.getFieldNotDefined()) ? null : LocalDateTime.parse(record.getString(5), formatter)
                         , record.getString(6)
                         , record.getString(7)
                         , record.getString(8)

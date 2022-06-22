@@ -8,10 +8,19 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 /**
+ * Command Invoker
+ * <p>Executing commands on the command line with the {@link ProcessBuilder}
+ *
  * @author Felix Lerch
  */
 public class CommandInvoker {
 
+    /**
+     * Execute command on the command line using the {@link ProcessBuilder}
+     *
+     * @param commands commandsto execute
+     * @return Output of the command line
+     */
     public static String submitCommands(List<String> commands) throws IOException, InterruptedException {
         ProcessBuilder processBuilder = new ProcessBuilder(commands);
         Process process = processBuilder.start();
