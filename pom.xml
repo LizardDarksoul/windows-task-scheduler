@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
@@ -23,11 +23,11 @@
         <developerConnection>scm:git:https://github.com/LizardDarksoul/windows-task-scheduler.git</developerConnection>
         <url>https://github.com/LizardDarksoul/windows-task-scheduler</url>
     </scm>
-    
+
     <groupId>com.gamergrotte</groupId>
     <artifactId>Windows-Task-Scheduler</artifactId>
-    <version>${project.revision}</version>
-    
+    <version>1.0.0</version>
+
     <dependencies>
         <dependency>
             <groupId>org.jetbrains</groupId>
@@ -59,10 +59,8 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-    
+
     <properties>
-        <!-- Version Management -->
-        <project.revision>1.0.0-SNAPSHOT</project.revision>
         <!-- Manifest -->
         <timestamp>${maven.build.timestamp}</timestamp>
         <maven.build.timestamp.format>yyyy-MM-dd HH.mm</maven.build.timestamp.format>
@@ -98,6 +96,13 @@
                             <BuildTime>${timestamp}</BuildTime>
                         </manifestEntries>
                     </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-install-plugin</artifactId>
+                <version>2.3.1</version>
+                <configuration>
+                    <createChecksum>true</createChecksum>
                 </configuration>
             </plugin>
             <!-- Flatten Plugin -->
@@ -166,6 +171,21 @@
                 <configuration>
                     <show>public</show>
                 </configuration>
+            </plugin>
+            <!-- Sources Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <!-- Version Plugins -->
             <plugin>
