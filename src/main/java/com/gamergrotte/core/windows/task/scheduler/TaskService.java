@@ -41,7 +41,8 @@ public class TaskService {
 
     private boolean remote;
 
-    @Getter @Setter
+    @Getter
+    @Setter
     private LanguageConfiguration languageConfiguration = new LanguageConfiguration();
 
     /**
@@ -56,8 +57,8 @@ public class TaskService {
      * Create a TaskService for managing Tasks.
      * <p>This will be able for managing Tasks of a remote computer.
      *
-     * @param host hostname of the remote computer
-     * @param user windows username for using the remote computer <p>Example: <code>&#60;DOMAIN&#62;//&#60;username&#62;</code>
+     * @param host     hostname of the remote computer
+     * @param user     windows username for using the remote computer <p>Example: <code>&#60;DOMAIN&#62;//&#60;username&#62;</code>
      * @param password windows password for using the remote computer
      */
     public TaskService(String host, String user, String password) {
@@ -67,12 +68,12 @@ public class TaskService {
     /**
      * Setting remote access for managing tasks of a remote computer
      *
-     * @param host hostname of the remote computer
-     * @param user windows username for using the remote computer <p>Example: <code>&#60;DOMAIN&#62;//&#60;username&#62;</code>
+     * @param host     hostname of the remote computer
+     * @param user     windows username for using the remote computer <p>Example: <code>&#60;DOMAIN&#62;//&#60;username&#62;</code>
      * @param password windows password for using the remote computer
      */
     public void setRemote(@NonNull String host, @NonNull String user, @NonNull String password) {
-        this.host= host;
+        this.host = host;
         this.user = user;
         this.password = password;
         remote = true;
@@ -134,6 +135,9 @@ public class TaskService {
      *
      * @param taskPath Path of the Task.<p>Only using the full path of the task.
      * @return Task executed
+     * @throws IOException          Exception during submitting internal command
+     * @throws InterruptedException Exception during submitting internal command
+     * @throws TaskServiceException Exception / Error from schtasks
      */
     public boolean executeTask(String taskPath) throws IOException, InterruptedException, TaskServiceException {
         List<String> commands = List.of("cmd.exe", "/c", getEncodingCommand() + " && " + getRunTaskCommand() + " /tn \"" + taskPath + "\"");
@@ -151,6 +155,9 @@ public class TaskService {
      *
      * @param taskPath Path of the Task.<p>Only using the full path of the task.
      * @return Task ended
+     * @throws IOException          Exception during submitting internal command
+     * @throws InterruptedException Exception during submitting internal command
+     * @throws TaskServiceException Exception / Error from schtasks
      */
     public boolean endTask(String taskPath) throws IOException, InterruptedException, TaskServiceException {
         List<String> commands = List.of("cmd.exe", "/c", getEncodingCommand() + " && " + getEndTaskCommand() + " /tn \"" + taskPath + "\"");
@@ -168,6 +175,9 @@ public class TaskService {
      *
      * @param taskPath Path of the Task.<p>Only using the full path of the task.
      * @return Task deleted
+     * @throws IOException          Exception during submitting internal command
+     * @throws InterruptedException Exception during submitting internal command
+     * @throws TaskServiceException Exception / Error from schtasks
      */
     public boolean deleteTask(String taskPath) throws IOException, InterruptedException, TaskServiceException {
         List<String> commands = List.of("cmd.exe", "/c", getEncodingCommand() + " && " + getDeleteTaskCommand() + " /tn \"" + taskPath + "\"");
@@ -185,6 +195,9 @@ public class TaskService {
      *
      * @param taskPath Path of the task.<p>Only using the full path of the task.
      * @return List of the scheduled Actions of the given Task
+     * @throws IOException          Exception during submitting internal command
+     * @throws InterruptedException Exception during submitting internal command
+     * @throws TaskServiceException Exception / Error from schtasks
      */
     public List<Task> getSingleTasks(String taskPath) throws IOException, InterruptedException, TaskServiceException {
         List<String> commands = List.of("cmd.exe", "/c", getEncodingCommand() + " && " + getQueryTaskCommand() + " /tn \"" + taskPath + "\"");
@@ -201,6 +214,9 @@ public class TaskService {
      * Getting all Tasks from the Windows Task Scheduler.
      *
      * @return List of all scheduled Actions
+     * @throws IOException          Exception during submitting internal command
+     * @throws InterruptedException Exception during submitting internal command
+     * @throws TaskServiceException Exception / Error from schtasks
      */
     public List<Task> getAllTasks() throws IOException, InterruptedException, TaskServiceException {
         List<String> commands = List.of("cmd.exe", "/c", getEncodingCommand() + " && " + getQueryTaskCommand());

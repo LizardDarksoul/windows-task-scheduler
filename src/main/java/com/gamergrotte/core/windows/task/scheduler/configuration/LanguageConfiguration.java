@@ -1,7 +1,9 @@
 package com.gamergrotte.core.windows.task.scheduler.configuration;
 
 import com.gamergrotte.core.windows.task.scheduler.TaskService;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * Language Configuration for the {@link TaskService} Class

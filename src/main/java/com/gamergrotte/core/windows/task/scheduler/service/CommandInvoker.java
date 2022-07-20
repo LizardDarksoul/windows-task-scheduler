@@ -20,6 +20,8 @@ public class CommandInvoker {
      *
      * @param commands commandsto execute
      * @return Output of the command line
+     * @throws IOException          Exception while running process
+     * @throws InterruptedException Exception while waiting for process
      */
     public static String submitCommands(List<String> commands) throws IOException, InterruptedException {
         ProcessBuilder processBuilder = new ProcessBuilder(commands);

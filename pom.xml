@@ -24,8 +24,10 @@
         <url>https://github.com/LizardDarksoul/windows-task-scheduler</url>
     </scm>
 
+    <name>Windows Task Scheduler for Java</name>
+
     <groupId>com.gamergrotte</groupId>
-    <artifactId>Windows-Task-Scheduler</artifactId>
+    <artifactId>windows-task-scheduler</artifactId>
     <version>1.0.0</version>
 
     <dependencies>
@@ -71,10 +73,13 @@
     </properties>
 
     <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
         <repository>
-            <id>github</id>
-            <name>GitHub Packages</name>
-            <url>https://maven.pkg.github.com/LizardDarksoul/windows-task-scheduler</url>
+            <id>ossrh</id>
+            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
     </distributionManagement>
 
@@ -255,6 +260,18 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <!-- Deployment -->
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>1.6.13</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <serverId>ossrh</serverId>
+                    <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                </configuration>
             </plugin>
         </plugins>
     </build>

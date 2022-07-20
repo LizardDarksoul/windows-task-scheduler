@@ -14,71 +14,80 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 public class Task {
-	
-	private String hostName;
-	private String taskName;
-	
-	private LocalDateTime nextExecutionTime;
-	
-	private String status;
-	private String loginMode;
-	
-	private LocalDateTime lastExecutionTime;
-	private String lastExecutionResult;
-	
-	private String author;
-	
-	private String execution;
-	private String startIn;
-	
-	private String comment;
-	private String executionStatus;
-	
-	private String idleTime;
-	private String powerManagement;
-	
-	private String executionUser;
-	
-	private String deleteTaskMoved;
-	private String killTaskAfterXTime;
-	
-	private String scheduleType;
-	private String scheduleStartTime;
-	private String scheduleStartDate;
-	private String scheduleEndDate;
-	private String scheduleDays;
-	private String scheduleMonths;
-	private String scheduleRepeatEvery;
-	private String scheduleRepeatEndTime;
-	private String scheduleRepeatEndDuration;
-	private String scheduleRepeatKill;
 
-	private TaskService taskService;
+    private String hostName;
+    private String taskName;
 
-	/**
-	 * Running the Task with the Windows Task Scheduler.
-	 *
-	 * @return Task executed
-	 */
-	public boolean execute() throws IOException, InterruptedException, TaskServiceException {
-		return taskService.executeTask(taskName);
-	}
+    private LocalDateTime nextExecutionTime;
 
-	/**
-	 * Ending the Task with the Windows Task Scheduler.
-	 *
-	 * @return Task ended
-	 */
-	public boolean end() throws IOException, InterruptedException, TaskServiceException {
-		return taskService.endTask(taskName);
-	}
+    private String status;
+    private String loginMode;
 
-	/**
-	 * Delete the Task with the Windows Task Scheduler.
-	 *
-	 * @return Task deleted
-	 */
-	public boolean delete() throws TaskServiceException, IOException, InterruptedException {
-		return taskService.deleteTask(taskName);
-	}
+    private LocalDateTime lastExecutionTime;
+    private String lastExecutionResult;
+
+    private String author;
+
+    private String execution;
+    private String startIn;
+
+    private String comment;
+    private String executionStatus;
+
+    private String idleTime;
+    private String powerManagement;
+
+    private String executionUser;
+
+    private String deleteTaskMoved;
+    private String killTaskAfterXTime;
+
+    private String scheduleType;
+    private String scheduleStartTime;
+    private String scheduleStartDate;
+    private String scheduleEndDate;
+    private String scheduleDays;
+    private String scheduleMonths;
+    private String scheduleRepeatEvery;
+    private String scheduleRepeatEndTime;
+    private String scheduleRepeatEndDuration;
+    private String scheduleRepeatKill;
+
+    private TaskService taskService;
+
+    /**
+     * Running the Task with the Windows Task Scheduler.
+     *
+     * @return Task executed
+     * @throws IOException          Exception during submitting internal command
+     * @throws InterruptedException Exception during submitting internal command
+     * @throws TaskServiceException Exception / Error from schtasks
+     */
+    public boolean execute() throws IOException, InterruptedException, TaskServiceException {
+        return taskService.executeTask(taskName);
+    }
+
+    /**
+     * Ending the Task with the Windows Task Scheduler.
+     *
+     * @return Task ended
+     * @throws IOException          Exception during submitting internal command
+     * @throws InterruptedException Exception during submitting internal command
+     * @throws TaskServiceException Exception / Error from schtasks
+     */
+    public boolean end() throws IOException, InterruptedException, TaskServiceException {
+        return taskService.endTask(taskName);
+    }
+
+    /**
+     * Delete the Task with the Windows Task Scheduler.
+     *
+     * @return Task deleted
+     * @throws IOException          Exception during submitting internal command
+     * @throws InterruptedException Exception during submitting internal command
+     * @throws TaskServiceException Exception / Error from schtasks
+     */
+    public boolean delete() throws TaskServiceException, IOException, InterruptedException {
+        return taskService.deleteTask(taskName);
+    }
 }
