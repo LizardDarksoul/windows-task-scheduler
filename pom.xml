@@ -4,13 +4,19 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <licenses>
-        <license>
-            <name>Apache License, Version 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
+    <name>Windows Task Scheduler for Java</name>
+    <description>Windows Task Scheduler API for Java is a Java library that can be used to access the Windows Task Scheduler.</description>
+    <url>https://github.com/LizardDarksoul/windows-task-scheduler</url>
+
+    <organization>
+        <name>GamerGrotte</name>
+        <url>https://socials.gamergrotte.de</url>
+    </organization>
+
+    <groupId>com.gamergrotte</groupId>
+    <artifactId>windows-task-scheduler</artifactId>
+    <version>1.0.0</version>
+
     <developers>
         <developer>
             <id>felixlerch</id>
@@ -18,17 +24,23 @@
             <email>felix.lerch@gamergrotte.de</email>
         </developer>
     </developers>
+
+    <contributors>
+
+    </contributors>
+
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
     <scm>
         <connection>scm:git:https://github.com/LizardDarksoul/windows-task-scheduler.git</connection>
         <developerConnection>scm:git:https://github.com/LizardDarksoul/windows-task-scheduler.git</developerConnection>
         <url>https://github.com/LizardDarksoul/windows-task-scheduler</url>
     </scm>
-
-    <name>Windows Task Scheduler for Java</name>
-
-    <groupId>com.gamergrotte</groupId>
-    <artifactId>windows-task-scheduler</artifactId>
-    <version>1.0.0</version>
 
     <dependencies>
         <dependency>
@@ -145,6 +157,15 @@
                 <artifactId>flatten-maven-plugin</artifactId>
                 <version>1.2.7</version>
                 <configuration>
+                    <pomElements>
+                        <name/>
+                        <description/>
+                        <url/>
+                        <organization/>
+                        <developers/>
+                        <contributors/>
+                        <scm/>
+                    </pomElements>
                 </configuration>
                 <executions>
                     <execution>
