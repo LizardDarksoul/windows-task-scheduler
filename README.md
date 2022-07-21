@@ -7,11 +7,21 @@ You can query and manage your tasks in the Windows Task Scheduler.
 
 ### Maven
 
-Currently, no builds are available over a repository.
+```xml
+<dependency>
+  <groupId>com.gamergrotte</groupId>
+  <artifactId>windows-task-scheduler</artifactId>
+  <version>1.0.0</version>
+</dependency>
+```
 
 ### Gradle
 
-Currently, no builds are available over a repository.
+```kotlin
+dependencies {
+    implementation("com.gamergrotte:windows-task-scheduler:1.0.0")
+}
+```
 
 ### Build from source
 
